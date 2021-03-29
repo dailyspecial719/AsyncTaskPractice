@@ -2,6 +2,9 @@ package com.generally2.asynctaskpractice;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,12 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
     class UploadTask extends AsyncTask<String, Integer, String>{
 
+        @SuppressLint("WrongConstant")
         @Override
         protected void onPreExecute() {
             Log.i(TAG, "onPreExecute" + Thread.currentThread().getName());
             textView.setText("uploading data...");
             progressIndicator.setVisibility(View.VISIBLE);
             btn.setEnabled(false);
+
+
+            if (MainActivity.this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){ // keeps user from rotating screen while thread is running
+            }
         }
 
         @Override
@@ -83,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(string);
             progressIndicator.setVisibility(View.INVISIBLE);
             btn.setEnabled(true);
+            MainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+
         }
     }
 }
